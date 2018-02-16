@@ -5,26 +5,43 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour {
 
 	private float m_speed = 15.0f;
+	private float m_jumpSpeed = 20.0f;
+	private float m_horizontal;
+	private float m_vertical;
+	private bool  m_jump;
 
-	void Start () {
-		
+	private Rigidbody m_rigidBody;
+
+	void Awake() 
+	{
+		m_rigidBody = GetComponent<Rigidbody> ();
 	}
 	
 	// Update is called once per frame
 	void Update () 
 	{
-		var x = Input.GetAxis ("Horizontal") * Time.deltaTime * m_speed;
-		var z = Input.GetAxis ("Vertical") * Time.deltaTime * m_speed;
-		transform.Translate (x, 0, z);
+		m_horizontal = Input.GetAxis ("Horizontal") * Time.deltaTime * m_speed;
+		m_vertical = Input.GetAxis ("Vertical") * Time.deltaTime * m_speed;
+		transform.Translate (m_horizontal, 0, m_vertical);
 
-		Jump ();
+		if (m_jump) {
+			if (Input.GetKeyDown (KeyCode.Space)) {  // jump if on ground
+				GetComponent<Rigidbody> ().velocity = Vector3.up * m_jumpSpeed;
+			}
+		}
 
 	}
 
-	void Jump()
+	void FixedUpdate()
 	{
-		if(Input.GetKeyDown(KeyCode.Space)){
-			GetComponent<Rigidbody>().velocity = Vector3.up * m_speed;
+		if (gameObject.CompareTag("Block")) {
+			m_jump = true;
+		} 
+		else {
+			m_jump = false;
 		}
 	}
+
+
+		
 }
