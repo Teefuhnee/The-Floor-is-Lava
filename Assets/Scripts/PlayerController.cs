@@ -5,10 +5,11 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour {
 
 	private float m_speed = 15.0f;
-	private float m_jumpSpeed = 20.0f;
+	private float m_jumpSpeed = 5.0f;
 	private float m_horizontal;
 	private float m_vertical;
 	private bool  m_jump;
+	private bool m_isGrounded;
 
 	private Rigidbody m_rigidBody;
 
@@ -24,24 +25,29 @@ public class PlayerController : MonoBehaviour {
 		m_vertical = Input.GetAxis ("Vertical") * Time.deltaTime * m_speed;
 		transform.Translate (m_horizontal, 0, m_vertical);
 
-		if (m_jump) {
+		if (m_isGrounded) {
 			if (Input.GetKeyDown (KeyCode.Space)) {  // jump if on ground
 				GetComponent<Rigidbody> ().velocity = Vector3.up * m_jumpSpeed;
 			}
 		}
 
 	}
-
-	void FixedUpdate()
+		
+	void OnCollisionStay (Collision collisionInfo) // for jumping info
 	{
-		if (gameObject.CompareTag("Block")) {
-			m_jump = true;
-		} 
-		else {
-			m_jump = false;
-		}
+		m_isGrounded = true;
 	}
 
+	void OnCollisionExit (Collision collisionInfo)
+	{
+		m_isGrounded = false;
+	}
 
-		
+	void OnTriggerEnter(Collider other) // destroy player if touch lava
+	{
+		if (other.tag == "Lava") 
+		{
+			Destroy (gameObject);
+		}
+	}
 }
