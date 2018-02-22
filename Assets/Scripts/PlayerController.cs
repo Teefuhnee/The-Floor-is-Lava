@@ -5,17 +5,23 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour {
 
 	private float m_speed = 15.0f;
-	private float m_jumpSpeed = 5.0f;
+	private float m_jumpSpeed = 20.0f;
 	private float m_horizontal;
 	private float m_vertical;
 	private bool  m_jump;
 	private bool m_isGrounded;
+	private float m_moreGravity = 30.0f; 
 
 	private Rigidbody m_rigidBody;
 
 	void Awake() 
 	{
 		m_rigidBody = GetComponent<Rigidbody> ();
+		Vector3 vel = m_rigidBody.velocity;
+		vel.y = m_moreGravity*Time.deltaTime;
+		m_rigidBody.velocity = vel; 
+
+		m_rigidBody.freezeRotation = true;
 	}
 	
 	// Update is called once per frame
@@ -27,9 +33,15 @@ public class PlayerController : MonoBehaviour {
 
 		if (m_isGrounded) {
 			if (Input.GetKeyDown (KeyCode.Space)) {  // jump if on ground
-				GetComponent<Rigidbody> ().velocity = Vector3.up * m_jumpSpeed;
+				m_rigidBody.velocity = Vector3.up * m_jumpSpeed;
 			}
+		} else {
+			Vector3 vel = m_rigidBody.velocity;
+			vel.y-=m_moreGravity*Time.deltaTime;
+			m_rigidBody.velocity=vel;
 		}
+
+
 
 	}
 		
@@ -42,12 +54,5 @@ public class PlayerController : MonoBehaviour {
 	{
 		m_isGrounded = false;
 	}
-
-	void OnTriggerEnter(Collider other) // destroy player if touch lava
-	{
-		if (other.tag == "Lava") 
-		{
-			Destroy (gameObject);
-		}
-	}
+		
 }

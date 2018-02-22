@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 136862775221525784}
   - component: {fileID: 23334902081390202}
   - component: {fileID: 114990631274652332}
-  - component: {fileID: 54098793315715788}
+  - component: {fileID: 54007446683113994}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -85,14 +85,14 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1596505121361678}
   m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
---- !u!54 &54098793315715788
+--- !u!54 &54007446683113994
 Rigidbody:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1596505121361678}
   serializedVersion: 2
-  m_Mass: 1
+  m_Mass: 0.0000001
   m_Drag: 0
   m_AngularDrag: 0
   m_UseGravity: 1
