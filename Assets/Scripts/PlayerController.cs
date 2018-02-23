@@ -5,12 +5,12 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour {
 
 	private float m_speed = 15.0f;
-	private float m_jumpSpeed = 20.0f;
+	private float m_jumpSpeed = 35.0f;
 	private float m_horizontal;
 	private float m_vertical;
 	private bool  m_jump;
 	private bool m_isGrounded;
-	private float m_moreGravity = 30.0f; 
+	private float m_moreGravity = 100.0f; 
 
 	private Rigidbody m_rigidBody;
 

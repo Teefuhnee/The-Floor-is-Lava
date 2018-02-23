@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public class Restart : MonoBehaviour {
 
 	public void RestartGame() {
-		SceneManager.LoadScene("Game");
 		Time.timeScale = 1;
+		SceneManager.LoadScene("Game");
 	}
 }

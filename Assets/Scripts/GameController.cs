@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour {
 
@@ -10,7 +11,15 @@ public class GameController : MonoBehaviour {
 	public GameObjectBox blocks;
 	private string blockColor;
 	public TextBox textBox;
-	private float m_speed = 30f;
+	private float m_speed = 22f;
+	private int m_level = 1;
+	public AudioClip m_winSound;
+	private AudioSource m_source;
+	public Transform m_blocks;
+	public Transform m_player;
+	public Transform m_pauseButton;
+	
+
 
 	static public bool m_alive;
 	static public bool m_finish;
@@ -18,6 +27,10 @@ public class GameController : MonoBehaviour {
 	public Transform m_pauseMenu;
 	public Transform m_controlsMenu;
 
+	void Awake()
+	{
+		m_source = GetComponent<AudioSource> ();
+	}
 	// Use this for initialization
 	void Start () 
 	{
@@ -37,6 +50,8 @@ public class GameController : MonoBehaviour {
 		};
 		textBox.colorText.text = "";
 		textBox.gameOverText.text = "";
+		textBox.winText.text = "";
+		textBox.levelText.text = "Level: " + m_level;
 		blockColor = m_colorBlocks [Random.Range (0, m_colorBlocks.Count)];
 		Debug.Log ("m_alive = " + m_alive + " m_finish = " + m_finish);
 	}
@@ -46,12 +61,21 @@ public class GameController : MonoBehaviour {
 	{
 		if (firstTime == 1) {
 			StartCoroutine (MoveBlocks ());
-			--firstTime;
+			++firstTime;
 		}
 		if (true == m_alive && true == m_finish) {
 			blockColor = m_colorBlocks [Random.Range (0, m_colorBlocks.Count)];
 			StartCoroutine (MoveBlocks ());
 			m_finish = false;
+
+			if (m_level >= 6 && firstTime == 2) {
+				++firstTime;
+				textBox.levelText.text = "";
+				StartCoroutine (WinState ());
+
+			}
+
+
 		}
 		if (false == m_alive) {
 			textBox.gameOverText.text = "Game Over!";
@@ -71,7 +95,7 @@ public class GameController : MonoBehaviour {
 	
 	}
 		
-	IEnumerator MoveBlocks()
+	IEnumerator MoveBlocks() // ugly code below
 	{
 		textBox.colorText.text = "";
 		yield return new WaitForSeconds (1.5f);
@@ -104,16 +128,37 @@ public class GameController : MonoBehaviour {
 				}
 		}
 		yield return new WaitForSeconds (1);
+		m_speed += 5f;
 		m_finish = true;
+		++m_level;
+		textBox.levelText.text = "Level: " + m_level;
 
 	}
 		
+
+	IEnumerator WinState()
+	{	
+		m_source.PlayOneShot (m_winSound, 1f);
+		m_blocks.gameObject.SetActive (false);
+		m_player.gameObject.SetActive (false);
+		m_pauseButton.gameObject.SetActive (false);
+		textBox.winText.text = "You're now a pro!";
+		Time.timeScale = 0.1f;
+		float pauseEndTime = Time.realtimeSinceStartup + 4;
+		while (Time.realtimeSinceStartup < pauseEndTime) {
+			yield return 0;
+		}
+		Time.timeScale = 1; 
+		SceneManager.LoadScene("Start");
+	}
 
 	[System.Serializable]
 	public class TextBox
 	{
 		public Text colorText;
 		public Text gameOverText;
+		public Text levelText;
+		public Text winText;
 	}
 
 	[System.Serializable]

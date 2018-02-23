@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GoBack : MonoBehaviour {
 
@@ -20,6 +21,11 @@ public class GoBack : MonoBehaviour {
 		m_colorText.gameObject.SetActive (true);
 		m_gameOverText.gameObject.SetActive (true);
 		m_pauseButton.gameObject.SetActive (true);
+	}
+
+	public void BacktoStart()
+	{
+		SceneManager.LoadScene("Start");
 	}
 }
 

@@ -7,7 +7,7 @@ public class Quit : MonoBehaviour {
 
 	public void ReturnTitle()
 	{
-		SceneManager.LoadScene("Start");
 		Time.timeScale = 1;
+		SceneManager.LoadScene("Start");
 	}
 }

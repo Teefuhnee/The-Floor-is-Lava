@@ -15,6 +15,7 @@ public class MovingBlocks : MonoBehaviour {
 	{
 		m_rigidBody = GetComponent<Rigidbody> ();
 		m_rigidBody.freezeRotation = true;
+	
 		originalPos = gameObject.transform.position;
 	}
 		
